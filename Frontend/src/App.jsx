@@ -1,53 +1,51 @@
-import React, { useEffect, useState } from 'react'
-import Herocard from './components/Herocard'
-import LatestBusiness from './components/LatestBusiness'
-import LatestIndia from './components/LatestIndia'
-import LatestSports from './components/LatestSports'
-import LatestWorld from './components/LatestWorld'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
+import Herocard from './components/Herocard';
+import LatestBusiness from './components/LatestBusiness';
+import LatestIndia from './components/LatestIndia';
+import LatestSports from './components/LatestSports';
+import LatestWorld from './components/LatestWorld';
 
 const App = () => {
-  const [businessNews, setBusinessNews] = useState([])
-  const [indiaNews, setIndiaNews] = useState([])
-  const [sportsNews, setSportsNews] = useState([])
-  const [worldNews, setWorldNews] = useState([])
+  const [businessNews, setBusinessNews] = useState([]);
+  const [indiaNews, setIndiaNews] = useState([]);
+  const [sportsNews, setSportsNews] = useState([]);
+  const [worldNews, setWorldNews] = useState([]);
+
+  const fallbackImage = "https://via.placeholder.com/300x200?text=No+Image";
 
   useEffect(() => {
     const fetchNews = async () => {
-      const businessData = Array.from({ length: 5 }).map((_, i) => ({
-        title: `Business Title ${i + 1}`,
-        description: `Sample business description ${i + 1}`,
-        imageUrl: `https://dummyimage.com/12${i + 1}x50${i + 1}`,
-        buttonText: "Read More"
-      }))
-      setBusinessNews(businessData)
+      try {
+        const res = await axios.get("http://localhost:3000/news");
+        const allNews = res.data;
 
-      const indiaData = Array.from({ length: 5 }).map((_, i) => ({
-        title: `India Title ${i + 1}`,
-        description: `Sample India news description ${i + 1}`,
-        imageUrl: `https://dummyimage.com/12${i + 2}x50${i + 2}`,
-        buttonText: "Read More"
-      }))
-      setIndiaNews(indiaData)
+        const formatNews = (categoryId) =>
+          allNews
+            .filter(item => item.categoryId === categoryId)
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .slice(0, 5)
+            .map(item => ({
+              title: item.title,
+              description: item.description,
+              imageUrl: item.image
+                ? `http://localhost:3000/uploads/${item.image}`
+                : fallbackImage,
+              buttonText: "Read More"
+            }));
 
-      const sportsData = Array.from({ length: 5 }).map((_, i) => ({
-        title: `Sports Title ${i + 1}`,
-        description: `Sample sports description ${i + 1}`,
-        imageUrl: `https://dummyimage.com/12${i + 3}x50${i + 3}`,
-        buttonText: "Read More"
-      }))
-      setSportsNews(sportsData)
+        setWorldNews(formatNews(1));   // World
+        setIndiaNews(formatNews(2));   // India
+        setBusinessNews(formatNews(3)); // Business
+        setSportsNews(formatNews(4));  // Sports
+      } catch (error) {
+        console.error("Error fetching news:", error);
+      }
+    };
 
-      const worldData = Array.from({ length: 5 }).map((_, i) => ({
-        title: `World Title ${i + 1}`,
-        description: `Sample world news description ${i + 1}`,
-        imageUrl: `https://dummyimage.com/12${i + 4}x50${i + 4}`,
-        buttonText: "Read More"
-      }))
-      setWorldNews(worldData)
-    }
-
-    fetchNews()
-  }, [])
+    fetchNews();
+  }, []);
 
   return (
     <>
@@ -85,7 +83,7 @@ const App = () => {
         ))}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;

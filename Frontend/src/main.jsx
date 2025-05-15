@@ -17,6 +17,7 @@ import AddNews from './Admin/pages/AddNews.jsx'
 import AddCategory from './Admin/pages/AddCategory.jsx'
 import UpdateNews from './Admin/pages/UpdateNews.jsx'
 import ProtectedRoute from './Admin/components/ProtectedRoute.jsx'
+import NewsDisplay from './Pages/NewsDisplay.jsx' 
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -29,6 +30,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/Business" element={<Business/>}/>
         <Route path="/Sports" element={<Sports/>}/>
         <Route path="/Login" element={<Login/>}/>
+        <Route path="/newsdisplay/:id" element={<NewsDisplay/>}/>
         </Route>
 
         <Route path="/admin" element={<ProtectedRoute><Layout2 /></ProtectedRoute>}>
