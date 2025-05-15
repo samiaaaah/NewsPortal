@@ -1,23 +1,30 @@
-import Singlecard from "../components/SingleCard";
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import Singlecard from '../components/SingleCard';
 
 const Business = () => {
-  const [businessNews, setBusinessNews] = useState([])
+  const [businessNews, setBusinessNews] = useState([]);
 
   useEffect(() => {
-    const fetchNews = async () => {
-      // Simulating fetch for each section
-      const businessData = Array.from({ length: 10 }).map((_, i) => ({
-        title: `Business Title ${i + 1}`,
-        description: `Sample Business news description ${i + 1}`,
-        imageUrl: `https://dummyimage.com/12${i + 4}x50${i + 4}`,
-        buttonText: "Read More"
-      }))
-      setBusinessNews(businessData)
-    }
+    const fetchBusinessNews = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/news");
 
-    fetchNews()
-  }, [])
+        const formattedNews = response.data.map(news => ({
+          title: news.title,
+          description: news.description,
+          imageUrl: `http://localhost:3000/uploads/${news.image}`, // Adjust path if needed
+          buttonText: "Read More"
+        }));
+
+        setBusinessNews(formattedNews);
+      } catch (error) {
+        console.error("Error fetching business news:", error);
+      }
+    };
+
+    fetchBusinessNews();
+  }, []);
 
   return (
     <>
@@ -28,6 +35,7 @@ const Business = () => {
         ))}
       </div>
     </>
-  )
-}
-export default Business
+  );
+};
+
+export default Business;

@@ -6,7 +6,7 @@ const SingleCard = ({ title, description, imageUrl, buttonText }) => {
       <div className="container px-5 py-10 mx-auto">
         <div className="flex flex-wrap -mx-4 -mb-10 text-center">
           <div className="sm:w-1/2 mb-10 px-4 flex items-center justify-end">
-            <div className="rounded-lg w-full h-64 overflow-hidden">
+            <div className="rounded-lg w-full h-72 overflow-hidden">
               <img
                 alt="content"
                 className="object-cover object-center h-full w-full"

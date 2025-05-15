@@ -1,23 +1,32 @@
-import Singlecard from "../components/SingleCard";
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import Singlecard from '../components/SingleCard';
 
 const World = () => {
-  const [worldNews, setWorldNews] = useState([])
+  const [worldNews, setWorldNews] = useState([]);
 
   useEffect(() => {
-    const fetchNews = async () => {
-      // Simulating fetch for each section
-      const worldData = Array.from({ length: 10 }).map((_, i) => ({
-        title: `World Title ${i + 1}`,
-        description: `Sample World news description ${i + 1}`,
-        imageUrl: `https://dummyimage.com/12${i + 3}x50${i + 3}`,
-        buttonText: "Read More"
-      }))
-      setWorldNews(worldData)
-    }
+    const fetchWorldNews = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/news");
 
-    fetchNews()
-  }, [])
+        const filteredNews = response.data.filter(news => news.category === 'World' || news.categoryId === 2);
+
+        const formattedNews = filteredNews.map(news => ({
+          title: news.title,
+          description: news.description,
+          imageUrl: `http://localhost:3000/uploads/${news.image}`,
+          buttonText: "Read More"
+        }));
+
+        setWorldNews(formattedNews);
+      } catch (error) {
+        console.error("Error fetching World news:", error);
+      }
+    };
+
+    fetchWorldNews();
+  }, []);
 
   return (
     <>
@@ -28,6 +37,7 @@ const World = () => {
         ))}
       </div>
     </>
-  )
-}
-export default World
+  );
+};
+
+export default World;

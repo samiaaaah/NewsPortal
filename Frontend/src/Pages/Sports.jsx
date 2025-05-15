@@ -1,24 +1,32 @@
-
-import Singlecard from "../components/SingleCard";
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import Singlecard from '../components/SingleCard';
 
 const Sports = () => {
-  const [sportsNews, setSportsNews] = useState([])
+  const [sportsNews, setSportsNews] = useState([]);
 
   useEffect(() => {
-    const fetchNews = async () => {
-      // Simulating fetch for each section
-      const sportsData = Array.from({ length: 10 }).map((_, i) => ({
-        title: `Sports Title ${i + 1}`,
-        description: `Sample Sports news description ${i + 1}`,
-        imageUrl: `https://dummyimage.com/12${i + 5}x50${i + 5}`,
-        buttonText: "Read More"
-      }))
-      setSportsNews(sportsData)
-    }
+    const fetchSportsNews = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/news");
 
-    fetchNews()
-  }, [])
+        const filteredNews = response.data.filter(news => news.category === 'Sports' || news.categoryId === 3);
+
+        const formattedNews = filteredNews.map(news => ({
+          title: news.title,
+          description: news.description,
+          imageUrl: `http://localhost:3000/uploads/${news.image}`,
+          buttonText: "Read More"
+        }));
+
+        setSportsNews(formattedNews);
+      } catch (error) {
+        console.error("Error fetching Sports news:", error);
+      }
+    };
+
+    fetchSportsNews();
+  }, []);
 
   return (
     <>
@@ -29,6 +37,7 @@ const Sports = () => {
         ))}
       </div>
     </>
-  )
-}
-export default Sports
+  );
+};
+
+export default Sports;
