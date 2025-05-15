@@ -1,7 +1,7 @@
 const express= require('express');
 const router= express.Router();
 const News =require('../models/newsModel.js');
-
+const Category = require('../models/categoryModel.js');
 
 
 // Get all news
@@ -13,7 +13,32 @@ async function getAllNews (req, res) {
         console.error('Error fetching news:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
-}
+} 
+
+const getNewsCounts = async (req, res) => {
+    try {
+      const total = await News.count();
+  
+      const categories = await Category.findAll();
+      const countsByCategory = {};
+  
+      for (let category of categories) {
+        const count = await News.count({ where: { categoryId: category.id } });
+        countsByCategory[category.name.toLowerCase()] = count; // ensure name is lowercase
+      }
+  
+      res.json({
+        success: true,
+        total,
+        ...countsByCategory,
+      });
+    } catch (error) {
+      console.error('Error getting news count:', error);
+      res.status(500).json({ success: false, message: 'Failed to get news count' });
+    }
+  };
+  
+
 
 
 //create news
@@ -100,4 +125,5 @@ module.exports = {
     getNewsById,
     deleteNews,
     updateNews,
+    getNewsCounts,
 }

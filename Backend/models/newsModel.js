@@ -40,4 +40,5 @@ const News = sequelize.define('news', {
 News.belongsTo(Category, {foreignKey:"categoryId"});
 Category.hasMany(News, {foreignKey:"categoryId"});
 
+  
 module.exports = News;

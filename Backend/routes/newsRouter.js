@@ -7,12 +7,16 @@ const  {
     getNewsById,
     deleteNews,
     updateNews,
+    getNewsCounts
 } = require('../controllers/newsContoller');
 
 router.get('/', getAllNews);
-router.post('/create',upload.single("image"), createNews);
+router.post('/',upload.single("image"), createNews);
+
+router.get('/count', getNewsCounts);
 router.get('/:id', getNewsById);
 router.put('/:id', updateNews);
 router.delete('/:id', deleteNews);
+
 
 module.exports = router;

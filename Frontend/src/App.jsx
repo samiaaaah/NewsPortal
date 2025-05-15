@@ -4,8 +4,6 @@ import LatestBusiness from './components/LatestBusiness'
 import LatestIndia from './components/LatestIndia'
 import LatestSports from './components/LatestSports'
 import LatestWorld from './components/LatestWorld'
-import LoginForm from './Pages/Login'
-
 
 const App = () => {
   const [businessNews, setBusinessNews] = useState([])
@@ -15,7 +13,6 @@ const App = () => {
 
   useEffect(() => {
     const fetchNews = async () => {
-      // Simulating fetch for each section
       const businessData = Array.from({ length: 5 }).map((_, i) => ({
         title: `Business Title ${i + 1}`,
         description: `Sample business description ${i + 1}`,
@@ -54,20 +51,13 @@ const App = () => {
 
   return (
     <>
-    
       <Herocard />
-      
+
       {/* Business News Section */}
       <h1 className="font-bold p-4 text-2xl">Business News</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 px-5">
         {businessNews.map((item, index) => (
-          <LatestBusiness
-            key={index}
-            title={item.title}
-            description={item.description}
-            imageUrl={item.imageUrl}
-            buttonText={item.buttonText}
-          />
+          <LatestBusiness key={index} {...item} />
         ))}
       </div>
 
@@ -75,13 +65,7 @@ const App = () => {
       <h1 className="font-bold p-4 text-2xl">India News</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 px-5">
         {indiaNews.map((item, index) => (
-          <LatestIndia
-            key={index}
-            title={item.title}
-            description={item.description}
-            imageUrl={item.imageUrl}
-            buttonText={item.buttonText}
-          />
+          <LatestIndia key={index} {...item} />
         ))}
       </div>
 
@@ -89,13 +73,7 @@ const App = () => {
       <h1 className="font-bold p-4 text-2xl">Sports News</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 px-5">
         {sportsNews.map((item, index) => (
-          <LatestSports
-            key={index}
-            title={item.title}
-            description={item.description}
-            imageUrl={item.imageUrl}
-            buttonText={item.buttonText}
-          />
+          <LatestSports key={index} {...item} />
         ))}
       </div>
 
@@ -103,16 +81,9 @@ const App = () => {
       <h1 className="font-bold p-4 text-2xl">World News</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 px-5">
         {worldNews.map((item, index) => (
-          <LatestWorld
-            key={index}
-            title={item.title}
-            description={item.description}
-            imageUrl={item.imageUrl}
-            buttonText={item.buttonText}
-          />
+          <LatestWorld key={index} {...item} />
         ))}
       </div>
-     
     </>
   )
 }

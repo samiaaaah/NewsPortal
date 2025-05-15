@@ -7,11 +7,15 @@ const {
     getCategoryById,
     deleteCategory,
     updateCategory,
+    getCategoryCount,
 } = require('../controllers/categoryController');
 
 router.get('/', getAllCategories);          
-router.post('/create', createCategory);
+router.post('/', createCategory);
+
+router.get('/count', getCategoryCount);
 router.get('/:id', getCategoryById);
 router.put('/:id', updateCategory);
 router.delete('/:id', deleteCategory);
+
 module.exports = router;

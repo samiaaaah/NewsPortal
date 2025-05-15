@@ -1,11 +1,9 @@
-const express = require('express');
-const router = express.Router();
 const Category = require('../models/categoryModel.js');
 
 async function getAllCategories(req, res) {
     try {
         const categories = await Category.findAll();
-        res.status(200).json(categories);
+        res.status(200).json({categories});
     } catch (error) {
         console.error('Error fetching categories:', error);
         res.status(500).json({ message: 'Internal server error' });
@@ -13,18 +11,20 @@ async function getAllCategories(req, res) {
 }
 
 async function createCategory(req, res) {   
-    try{
-        const {name}=req.body;
-        const categoryData = {
-            name,
-        };
-        const category = await Category.create(categoryData);
-        res.status(201).json(category);
-    }
-    catch (error) {
-        console.error('Error creating category:', error);
-        res.status(500).json({ message: 'Internal server error' });
-    }
+    try {
+        console.log('Request body:', req.body);       
+        const { name } = req.body;
+       
+        if (!name || name.trim() === '') {
+          return res.status(400).json({ message: 'Category name is required' });
+        }
+    
+        const newCategory = await Category.create({ name }); // Or your DB call
+        res.status(200).json({ category: newCategory });
+      } catch (error) {
+        console.error('Error in /category/create:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+      }
 }
 
 async function getCategoryById(req, res) {
@@ -50,6 +50,17 @@ async function updateCategory(req, res) {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
+//get count category 
+async function getCategoryCount(req, res) {
+    try {
+        const count = await Category.count();
+        res.json({ success: true, count });
+    } catch (error) {
+        console.error('Error getting category count:', error);
+        res.status(500).json({ success: false, message: 'Failed to get category count' });
+    }
+}
+
 async function deleteCategory(req, res) {
     try {
         const category = await Category.findByPk(req.params.id);
@@ -66,5 +77,6 @@ async function deleteCategory(req, res) {
     createCategory,
     getCategoryById,
     updateCategory,
-    deleteCategory
+    deleteCategory,
+    getCategoryCount,
 };
