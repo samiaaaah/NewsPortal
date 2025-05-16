@@ -30,7 +30,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/Business" element={<Business/>}/>
         <Route path="/Sports" element={<Sports/>}/>
         <Route path="/Login" element={<Login/>}/>
-        <Route path="/newsdisplay/:id" element={<NewsDisplay/>}/>
+        <Route path="/news/:id" element={<NewsDisplay/>}/>
         </Route>
 
         <Route path="/admin" element={<ProtectedRoute><Layout2 /></ProtectedRoute>}>

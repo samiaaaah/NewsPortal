@@ -15,7 +15,7 @@ router.post('/',upload.single("image"), createNews);
 
 router.get('/count', getNewsCounts);
 router.get('/:id', getNewsById);
-router.put('/:id', updateNews);
+router.put('/:id',upload.single("image"), updateNews);
 router.delete('/:id', deleteNews);
 
 

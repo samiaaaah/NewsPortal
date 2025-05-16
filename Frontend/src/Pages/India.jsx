@@ -11,11 +11,11 @@ const India = () => {
         const response = await axios.get("http://localhost:3000/news");
 
         // Filter or map depending on how categories are sent from backend
-        const filteredNews = response.data.filter(news => news.category === 'India' || news.categoryId === 1); // example category filter
+        const filteredNews = response.data.filter(news => news.categoryName === 'India' || news.categoryId === 2); // example category filter
 
         const formattedNews = filteredNews.map(news => ({
+          id : news.id,
           title: news.title,
-          description: news.description,
           imageUrl: `http://localhost:3000/uploads/${news.image}`,
           buttonText: "Read More"
         }));

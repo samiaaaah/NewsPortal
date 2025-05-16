@@ -10,11 +10,11 @@ const World = () => {
       try {
         const response = await axios.get("http://localhost:3000/news");
 
-        const filteredNews = response.data.filter(news => news.category === 'World' || news.categoryId === 2);
+        const filteredNews = response.data.filter(news => news.category === 'World' || news.categoryId === 1);
 
         const formattedNews = filteredNews.map(news => ({
+          id : news.id,
           title: news.title,
-          description: news.description,
           imageUrl: `http://localhost:3000/uploads/${news.image}`,
           buttonText: "Read More"
         }));

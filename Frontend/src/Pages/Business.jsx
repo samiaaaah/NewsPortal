@@ -5,26 +5,29 @@ import Singlecard from '../components/SingleCard';
 const Business = () => {
   const [businessNews, setBusinessNews] = useState([]);
 
-  useEffect(() => {
-    const fetchBusinessNews = async () => {
-      try {
-        const response = await axios.get("http://localhost:3000/news");
-
-        const formattedNews = response.data.map(news => ({
-          title: news.title,
-          description: news.description,
-          imageUrl: `http://localhost:3000/uploads/${news.image}`, // Adjust path if needed
-          buttonText: "Read More"
-        }));
-
-        setBusinessNews(formattedNews);
-      } catch (error) {
-        console.error("Error fetching business news:", error);
-      }
-    };
-
-    fetchBusinessNews();
-  }, []);
+    useEffect(() => {
+      const fetchBusinessNews = async () => {
+        try {
+          const response = await axios.get("http://localhost:3000/news");
+  
+          // Filter or map depending on how categories are sent from backend
+          const filteredNews = response.data.filter(news => news.categoryName === 'Business' || news.categoryId === 3); // example category filter
+  
+          const formattedNews = filteredNews.map(news => ({
+            id : news.id,
+            title: news.title,
+            imageUrl: `http://localhost:3000/uploads/${news.image}`,
+            buttonText: "Read More"
+          }));
+  
+          setBusinessNews(formattedNews);
+        } catch (error) {
+          console.error("Error fetching Business news:", error);
+        }
+      };
+  
+      fetchBusinessNews();
+    }, []);
 
   return (
     <>

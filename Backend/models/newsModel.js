@@ -30,6 +30,7 @@ const News = sequelize.define('news', {
     publishedAt:{
         type: DataTypes.DATE,
         allowNull: false,
+        defaultValue: DataTypes.NOW,
     },
 },{
     timestamps:true,
